@@ -25,7 +25,9 @@ class PlaySoundsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+		
+		restoreSliderPosition()
+		
         do {
             audioPlayer = try AVAudioPlayer(contentsOfURL: receivedAudio.filePathUrl)
         } catch _ {
@@ -42,6 +44,14 @@ class PlaySoundsViewController: UIViewController {
         
         setUserInterfaceToPlayMode(false)
     }
+	
+	func restoreSliderPosition() {
+		
+		if let sliderValue = NSUserDefaults.standardUserDefaults().valueForKey(SliderValueKey) {
+			
+			sliderView.value = sliderValue as! Float
+		}
+	}
     
     func setUserInterfaceToPlayMode(isPlayMode: Bool) {
         startButton.hidden = isPlayMode
@@ -98,5 +108,6 @@ class PlaySoundsViewController: UIViewController {
     
     @IBAction func sliderDidMove(sender: UISlider) {
         print("Slider vaue: \(sliderView.value)")
+		NSUserDefaults.standardUserDefaults().setFloat(sliderView.value, forKey: SliderValueKey)
     }
 }
