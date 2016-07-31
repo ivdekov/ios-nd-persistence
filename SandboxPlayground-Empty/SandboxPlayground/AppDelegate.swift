@@ -13,9 +13,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    func sandboxPlayground() {
+        
+        let fileManager = NSFileManager.defaultManager()
+        let urls = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        
+        let url = urls.last?.URLByAppendingPathComponent("file.txt")
+        
+        do {
+            try "Hi There!".writeToURL(url!, atomically: true, encoding: NSUTF8StringEncoding)
+        } catch {
+            print("Error while writing")
+        }
+        
+        do {
+            let content = try String(contentsOfURL: url!, encoding: NSUTF8StringEncoding)
+            
+            if content == "Hi There!" {
+                print("yay!")
+            } else {
+                print("oops")
+            }
+        } catch {
+            print("something went wrong")
+        }
+    }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        sandboxPlayground()
         return true
     }
 
